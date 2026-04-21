@@ -412,7 +412,7 @@ class XcodeProjectInterpreter {
           'pgrep',
           '-n', // Select only the newest
           '-f', // Match against full argument lists
-          ...command,
+          command.join(' '),
         ]);
         if (result.exitCode == 0) {
           final int? pid = int.tryParse(result.stdout.trim());
