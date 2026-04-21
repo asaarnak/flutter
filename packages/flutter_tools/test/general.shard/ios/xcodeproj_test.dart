@@ -56,15 +56,6 @@ void main() {
     '-resolvePackageDependencies',
   ];
 
-  const kFindProcessResolvePackagesCommand = FakeCommand(
-    command: <String>[
-      'pgrep',
-      '-n',
-      '-f',
-      'xcrun xcodebuild -clonedSourcePackagesDirPath /build/ios/SourcePackages -resolvePackageDependencies',
-    ],
-  );
-
   const kResolvePackagesCommand = FakeCommand(command: kResolvePackagesCommandList);
 
   late FakeProcessManager fakeProcessManager;
@@ -279,7 +270,7 @@ void main() {
       fakeProcessManager.addCommands(<FakeCommand>[
         kWhichSysctlCommand,
         const FakeCommand(command: <String>['sysctl', 'hw.optional.arm64'], exitCode: 1),
-        kFindProcessResolvePackagesCommand,
+
         kResolvePackagesCommand,
         FakeCommand(
           command: <String>[
@@ -327,7 +318,7 @@ void main() {
       fakeProcessManager.addCommands(<FakeCommand>[
         kWhichSysctlCommand,
         kx64CheckCommand,
-        kFindProcessResolvePackagesCommand,
+
         kResolvePackagesCommand,
         FakeCommand(
           command: <String>[
@@ -375,7 +366,7 @@ void main() {
       fakeProcessManager.addCommands(<FakeCommand>[
         kWhichSysctlCommand,
         kx64CheckCommand,
-        kFindProcessResolvePackagesCommand,
+
         kResolvePackagesCommand,
         FakeCommand(
           command: <String>[
@@ -423,7 +414,7 @@ void main() {
       fakeProcessManager.addCommands(<FakeCommand>[
         kWhichSysctlCommand,
         kx64CheckCommand,
-        kFindProcessResolvePackagesCommand,
+
         kResolvePackagesCommand,
         FakeCommand(
           command: <String>[
@@ -471,7 +462,7 @@ void main() {
       fakeProcessManager.addCommands(<FakeCommand>[
         kWhichSysctlCommand,
         kx64CheckCommand,
-        kFindProcessResolvePackagesCommand,
+
         kResolvePackagesCommand,
         FakeCommand(
           command: <String>[
@@ -517,7 +508,7 @@ void main() {
       fakeProcessManager.addCommands(<FakeCommand>[
         kWhichSysctlCommand,
         kx64CheckCommand,
-        kFindProcessResolvePackagesCommand,
+
         kResolvePackagesCommand,
         FakeCommand(
           command: <String>[
@@ -563,14 +554,6 @@ void main() {
       fakeProcessManager.addCommands(<FakeCommand>[
         kWhichSysctlCommand,
         kx64CheckCommand,
-        const FakeCommand(
-          command: <String>[
-            'pgrep',
-            '-n',
-            '-f',
-            'xcrun xcodebuild -clonedSourcePackagesDirPath /build/macos/SourcePackages -resolvePackageDependencies',
-          ],
-        ),
         const FakeCommand(
           command: <String>[
             'xcrun',
@@ -626,7 +609,7 @@ void main() {
     fakeProcessManager.addCommands(const <FakeCommand>[
       kWhichSysctlCommand,
       kx64CheckCommand,
-      kFindProcessResolvePackagesCommand,
+
       kResolvePackagesCommand,
       FakeCommand(
         command: <String>[
@@ -666,7 +649,7 @@ void main() {
       fakeProcessManager.addCommands(const <FakeCommand>[
         kWhichSysctlCommand,
         kx64CheckCommand,
-        kFindProcessResolvePackagesCommand,
+
         kResolvePackagesCommand,
         FakeCommand(
           command: <String>[
@@ -709,7 +692,7 @@ void main() {
       fakeProcessManager.addCommands(const <FakeCommand>[
         kWhichSysctlCommand,
         kx64CheckCommand,
-        kFindProcessResolvePackagesCommand,
+
         kResolvePackagesCommand,
         FakeCommand(
           command: <String>[
@@ -754,7 +737,7 @@ void main() {
       fakeProcessManager.addCommands(const <FakeCommand>[
         kWhichSysctlCommand,
         kx64CheckCommand,
-        kFindProcessResolvePackagesCommand,
+
         kResolvePackagesCommand,
         FakeCommand(
           command: <String>[
@@ -2508,16 +2491,6 @@ flutter:
         kx64CheckCommand,
         FakeCommand(
           command: <String>[
-            'pgrep',
-            '-n',
-            '-f',
-            'xcrun xcodebuild -clonedSourcePackagesDirPath /${buildDirectory.path}/SourcePackages -resolvePackageDependencies',
-          ],
-          stdout: '12345',
-        ),
-        const FakeCommand(command: <String>['kill', '12345']),
-        FakeCommand(
-          command: <String>[
             'xcrun',
             'xcodebuild',
             '-clonedSourcePackagesDirPath',
@@ -2584,15 +2557,6 @@ Xcode is fetching Swift Package Manager dependencies. This may take several minu
       kx64CheckCommand,
       FakeCommand(
         command: <String>[
-          'pgrep',
-          '-n',
-          '-f',
-          'xcrun xcodebuild -clonedSourcePackagesDirPath /${buildDirectory.path}/SourcePackages -resolvePackageDependencies',
-        ],
-        exitCode: 1,
-      ),
-      FakeCommand(
-        command: <String>[
           'xcrun',
           'xcodebuild',
           '-clonedSourcePackagesDirPath',
@@ -2636,16 +2600,6 @@ Xcode is fetching Swift Package Manager dependencies. This may take several minu
     fakeProcessManager.addCommands(<FakeCommand>[
       kWhichSysctlCommand,
       kx64CheckCommand,
-      FakeCommand(
-        command: <String>[
-          'pgrep',
-          '-n',
-          '-f',
-          'xcrun xcodebuild -clonedSourcePackagesDirPath /${buildDirectory.path}/SourcePackages -resolvePackageDependencies',
-        ],
-        stdout: '12345',
-      ),
-      const FakeCommand(command: <String>['kill', '12345']),
       FakeCommand(
         command: <String>[
           'xcrun',
@@ -2707,16 +2661,6 @@ Resolved source packages:
         kx64CheckCommand,
         FakeCommand(
           command: <String>[
-            'pgrep',
-            '-n',
-            '-f',
-            'xcrun xcodebuild -clonedSourcePackagesDirPath /${buildDirectory.path}/SourcePackages -resolvePackageDependencies',
-          ],
-          stdout: '12345',
-        ),
-        const FakeCommand(command: <String>['kill', '12345']),
-        FakeCommand(
-          command: <String>[
             'xcrun',
             'xcodebuild',
             '-clonedSourcePackagesDirPath',
@@ -2776,14 +2720,6 @@ Resolved source packages:
     fakeProcessManager.addCommands(<FakeCommand>[
       kWhichSysctlCommand,
       kx64CheckCommand,
-      FakeCommand(
-        command: <String>[
-          'pgrep',
-          '-n',
-          '-f',
-          'xcrun xcodebuild -clonedSourcePackagesDirPath /${buildDirectory.path}/SourcePackages -resolvePackageDependencies',
-        ],
-      ),
       FakeCommand(
         command: <String>[
           'xcrun',

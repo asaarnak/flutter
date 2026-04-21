@@ -386,8 +386,7 @@ class XcodeProjectInterpreter {
 
   /// Prefetches Swift packages for the given Xcode project.
   ///
-  /// If a process is already running from a previous Flutter command, kill it before starting
-  /// the command. If the process is already running from the same Flutter command, wait for it to
+  /// If the process is already running from the same Flutter command, wait for it to
   /// complete if [waitForCompletion] is true.
   ///
   /// If [quiet] is false, it will print a spinner while the command is running and print logs of
@@ -404,26 +403,7 @@ class XcodeProjectInterpreter {
         ..._xcodebuildProjectCommandArguments(buildDirectory, skipPackageResolution: false),
         '-resolvePackageDependencies',
       ];
-      if (_swiftPackageFetchProcess == null) {
-        // Check if process is already running from a previous Flutter command. If it is, kill it
-        // so we don't have the process running twice. When this process is run twice, it'll cause
-        // one to error. The new process will pick up where the old one left off.
-        final RunResult result = await _processUtils.run([
-          'pgrep',
-          '-n', // Select only the newest
-          '-f', // Match against full argument lists
-          command.join(' '),
-        ]);
-        if (result.exitCode == 0) {
-          final int? pid = int.tryParse(result.stdout.trim());
-          if (pid != null) {
-            _logger.printTrace(
-              'Swift Package Manager dependencies are already being fetched by PID $pid',
-            );
-            await _processUtils.run(['kill', '$pid']);
-          }
-        }
-      }
+
 
       final Process process =
           _swiftPackageFetchProcess ??
