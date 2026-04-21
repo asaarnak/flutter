@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:async';
-
 import 'package:file/memory.dart';
 import 'package:meta/meta.dart';
 import 'package:process/process.dart';
@@ -20,12 +18,10 @@ import '../base/terminal.dart';
 import '../base/utils.dart';
 import '../base/version.dart';
 import '../build_info.dart';
-import '../convert.dart';
 import '../reporting/reporting.dart';
 
 final _settingExpr = RegExp(r'(\w+)\s*=\s*(.*)$');
 final _varExpr = RegExp(r'\$\(([^)]*)\)');
-const kSwiftPackageCacheDirectoryName = 'SourcePackages';
 
 /// Interpreter of Xcode projects.
 class XcodeProjectInterpreter {
@@ -177,56 +173,6 @@ class XcodeProjectInterpreter {
     return xcrunCommand;
   }
 
-  /// Prefetches SwiftPM dependencies needed for `xcodebuild` command and then returns a list of
-  /// required arguments for the `xcodebuild` Xcode project command.
-  ///
-  /// This is not required when running commands that don't require a project (e.g.
-  /// `xcodebuild -version`).
-  ///
-  /// Using this method when running `xcodebuild` commands ensures that `xcrun` is used properly
-  /// and that the Swift package cache is properly configured.
-  ///
-  /// When [skipPackageResolution] is true, it uses arguments to attempt skipping any Swift package
-  /// resolution or updates. This should be false when running [prefetchSwiftPackages], so packages
-  /// should already be resolved, downloaded, and updated on subsquent `xcodebuild` commands.
-  Future<List<String>> xcodebuildProjectCommand(
-    String projectPath,
-    Directory buildDirectory, {
-    bool skipPackageResolution = true,
-  }) async {
-    // All `xcodebuild` project commands will download and resolve Swift packages.
-    // We should always prefetch Swift packages before running any `xcodebuild` project command
-    // to control the output.
-    await prefetchSwiftPackages(projectPath, buildDirectory: buildDirectory, quiet: false);
-
-    return _xcodebuildProjectCommandArguments(
-      buildDirectory,
-      skipPackageResolution: skipPackageResolution,
-    );
-  }
-
-  List<String> _xcodebuildProjectCommandArguments(
-    Directory buildDirectory, {
-    bool skipPackageResolution = true,
-  }) {
-    final String cachePath = buildDirectory
-        .childDirectory(kSwiftPackageCacheDirectoryName)
-        .absolute
-        .path;
-    return <String>[
-      ...xcrunCommand(),
-      'xcodebuild',
-      '-clonedSourcePackagesDirPath',
-      cachePath,
-      if (skipPackageResolution) ...<String>[
-        '-disableAutomaticPackageResolution',
-        '-skipPackageUpdates',
-        '-skipPackagePluginValidation',
-        '-skipPackageSignatureValidation',
-      ],
-    ];
-  }
-
   /// Asynchronously retrieve xcode build settings. This one is preferred for
   /// new call-sites.
   ///
@@ -248,7 +194,8 @@ class XcodeProjectInterpreter {
       XcodeSdk.WatchOS || XcodeSdk.WatchSimulator => getIosBuildDirectory(),
     };
     final showBuildSettingsCommand = <String>[
-      ...(await xcodebuildProjectCommand(projectPath, _fileSystem.directory(buildDir))),
+      ...xcrunCommand(),
+      'xcodebuild',
       '-project',
       _fileSystem.path.absolute(projectPath),
       if (scheme != null) ...<String>['-scheme', scheme],
@@ -356,15 +303,10 @@ class XcodeProjectInterpreter {
     }
   }
 
-  Future<void> cleanWorkspace(
-    String workspacePath,
-    String scheme, {
-    required Directory buildDirectory,
-    bool verbose = false,
-  }) async {
-    final String projectPath = _fileSystem.currentDirectory.path;
+  Future<void> cleanWorkspace(String workspacePath, String scheme, {bool verbose = false}) async {
     await _processUtils.run(<String>[
-      ...(await xcodebuildProjectCommand(projectPath, buildDirectory)),
+      ...xcrunCommand(),
+      'xcodebuild',
       '-workspace',
       workspacePath,
       '-scheme',
@@ -467,11 +409,7 @@ class XcodeProjectInterpreter {
     }
   }
 
-  Future<XcodeProjectInfo?> getInfo(
-    String projectPath, {
-    String? projectFilename,
-    required Directory buildDirectory,
-  }) async {
+  Future<XcodeProjectInfo?> getInfo(String projectPath, {String? projectFilename}) async {
     // The exit code returned by 'xcodebuild -list' when either:
     // * -project is passed and the given project isn't there, or
     // * no -project is passed and there isn't a project.
@@ -481,7 +419,8 @@ class XcodeProjectInterpreter {
     bool allowedFailures(int c) => c == missingProjectExitCode || c == corruptedProjectExitCode;
     final RunResult result = await _processUtils.run(
       <String>[
-        ...(await xcodebuildProjectCommand(projectPath, buildDirectory)),
+        ...xcrunCommand(),
+        'xcodebuild',
         '-list',
         if (projectFilename != null) ...<String>['-project', projectFilename],
       ],

@@ -34,11 +34,7 @@ import '../../src/throwing_pub.dart';
 
 class FakeXcodeProjectInterpreterWithProfile extends FakeXcodeProjectInterpreter {
   @override
-  Future<XcodeProjectInfo> getInfo(
-    String projectPath, {
-    String? projectFilename,
-    required Directory buildDirectory,
-  }) async {
+  Future<XcodeProjectInfo> getInfo(String projectPath, {String? projectFilename}) async {
     return XcodeProjectInfo(<String>['Runner'], <String>['Debug', 'Profile', 'Release'], <String>[
       'Runner',
     ], BufferLogger.test());
@@ -51,11 +47,7 @@ class FakeXcodeProjectInterpreterWithBuildSettings extends FakeXcodeProjectInter
   final Map<String, String> overrides;
 
   @override
-  Future<XcodeProjectInfo> getInfo(
-    String projectPath, {
-    String? projectFilename,
-    required Directory buildDirectory,
-  }) async {
+  Future<XcodeProjectInfo> getInfo(String projectPath, {String? projectFilename}) async {
     return XcodeProjectInfo(<String>['Runner'], <String>['Debug', 'Release'], <String>[
       'Runner',
     ], BufferLogger.test());

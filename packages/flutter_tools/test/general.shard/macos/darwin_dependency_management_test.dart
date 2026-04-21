@@ -4,11 +4,9 @@
 
 import 'package:file/file.dart';
 import 'package:file/memory.dart';
-import 'package:flutter_tools/src/base/config.dart';
 import 'package:flutter_tools/src/base/logger.dart';
 import 'package:flutter_tools/src/base/platform.dart';
 import 'package:flutter_tools/src/darwin/darwin.dart';
-import 'package:flutter_tools/src/ios/xcodeproj.dart';
 import 'package:flutter_tools/src/macos/cocoapods.dart';
 import 'package:flutter_tools/src/macos/darwin_dependency_management.dart';
 import 'package:flutter_tools/src/macos/swift_package_manager.dart';
@@ -65,8 +63,6 @@ void main() {
                 logger: testLogger,
                 analytics: fakeAnalytics,
                 platform: FakePlatform(operatingSystem: 'macos'),
-                xcodeProjectInterpreter: FakeXcodeProjectInterpreter(),
-                config: FakeConfig(),
               );
               await dependencyManagement.setUp(platform: platform);
               expect(swiftPackageManager.generated, isTrue);
@@ -143,8 +139,6 @@ void main() {
                   logger: testLogger,
                   analytics: testAnalytics,
                   platform: FakePlatform(operatingSystem: 'macos'),
-                  xcodeProjectInterpreter: FakeXcodeProjectInterpreter(),
-                  config: FakeConfig(),
                 );
                 await dependencyManagement.setUp(platform: platform);
                 expect(swiftPackageManager.generated, isTrue);
@@ -214,8 +208,6 @@ void main() {
                   logger: testLogger,
                   analytics: testAnalytics,
                   platform: FakePlatform(operatingSystem: 'macos'),
-                  xcodeProjectInterpreter: FakeXcodeProjectInterpreter(),
-                  config: FakeConfig(),
                 );
                 await dependencyManagement.setUp(platform: platform);
                 expect(swiftPackageManager.generated, isTrue);
@@ -288,8 +280,6 @@ void main() {
                   logger: testLogger,
                   analytics: testAnalytics,
                   platform: FakePlatform(operatingSystem: 'macos'),
-                  xcodeProjectInterpreter: FakeXcodeProjectInterpreter(),
-                  config: FakeConfig(),
                 );
                 await dependencyManagement.setUp(platform: platform);
                 expect(swiftPackageManager.generated, isTrue);
@@ -378,8 +368,6 @@ void main() {
                   logger: testLogger,
                   analytics: testAnalytics,
                   platform: FakePlatform(operatingSystem: 'macos'),
-                  xcodeProjectInterpreter: FakeXcodeProjectInterpreter(),
-                  config: FakeConfig(),
                 );
                 await dependencyManagement.setUp(platform: platform);
                 expect(swiftPackageManager.generated, isTrue);
@@ -477,8 +465,6 @@ void main() {
                 logger: testLogger,
                 analytics: testAnalytics,
                 platform: FakePlatform(operatingSystem: 'macos'),
-                xcodeProjectInterpreter: FakeXcodeProjectInterpreter(),
-                config: FakeConfig(),
               );
               await dependencyManagement.setUp(platform: platform);
               expect(swiftPackageManager.generated, isTrue);
@@ -549,8 +535,6 @@ void main() {
                 logger: testLogger,
                 analytics: testAnalytics,
                 platform: FakePlatform(operatingSystem: 'macos'),
-                xcodeProjectInterpreter: FakeXcodeProjectInterpreter(),
-                config: FakeConfig(),
               );
               await dependencyManagement.setUp(platform: platform);
               expect(swiftPackageManager.generated, isTrue);
@@ -608,8 +592,6 @@ void main() {
                 logger: testLogger,
                 analytics: testAnalytics,
                 platform: FakePlatform(operatingSystem: 'macos'),
-                xcodeProjectInterpreter: FakeXcodeProjectInterpreter(),
-                config: FakeConfig(),
               );
               await dependencyManagement.setUp(platform: platform);
               expect(swiftPackageManager.generated, isFalse);
@@ -670,8 +652,6 @@ void main() {
                 logger: testLogger,
                 analytics: testAnalytics,
                 platform: FakePlatform(operatingSystem: 'macos'),
-                xcodeProjectInterpreter: FakeXcodeProjectInterpreter(),
-                config: FakeConfig(),
               );
               await expectLater(
                 () => dependencyManagement.setUp(platform: platform),
@@ -723,8 +703,6 @@ void main() {
                   logger: testLogger,
                   analytics: testAnalytics,
                   platform: FakePlatform(operatingSystem: 'macos'),
-                  xcodeProjectInterpreter: FakeXcodeProjectInterpreter(),
-                  config: FakeConfig(),
                 );
                 await expectLater(
                   () => dependencyManagement.setUp(platform: platform),
@@ -772,8 +750,6 @@ void main() {
                   logger: testLogger,
                   analytics: testAnalytics,
                   platform: FakePlatform(operatingSystem: 'windows'),
-                  xcodeProjectInterpreter: null,
-                  config: FakeConfig(),
                 );
                 await dependencyManagement.setUp(platform: platform);
                 expect(swiftPackageManager.generated, isFalse);
@@ -812,8 +788,6 @@ void main() {
                 logger: testLogger,
                 analytics: testAnalytics,
                 platform: FakePlatform(operatingSystem: 'macos'),
-                xcodeProjectInterpreter: FakeXcodeProjectInterpreter(),
-                config: FakeConfig(),
               );
               await dependencyManagement.setUp(platform: platform);
               expect(swiftPackageManager.generated, isFalse);
@@ -859,8 +833,6 @@ void main() {
           logger: testLogger,
           analytics: testAnalytics,
           platform: FakePlatform(operatingSystem: 'macos'),
-          xcodeProjectInterpreter: FakeXcodeProjectInterpreter(),
-          config: FakeConfig(),
         );
         await dependencyManagement.setUp(platform: FlutterDarwinPlatform.macos);
         expect(xcodeProject.outputFileList.readAsStringSync(), 'Something else');
@@ -1154,8 +1126,6 @@ version: 0.0.1
           logger: testLogger,
           analytics: fakeAnalytics,
           platform: FakePlatform(operatingSystem: 'macos'),
-          xcodeProjectInterpreter: FakeXcodeProjectInterpreter(),
-          config: FakeConfig(),
         );
 
         await dependencyManagement.setUp(platform: FlutterDarwinPlatform.ios);
@@ -1196,8 +1166,6 @@ version: 0.0.1
           logger: testLogger,
           analytics: fakeAnalytics,
           platform: FakePlatform(operatingSystem: 'macos'),
-          xcodeProjectInterpreter: FakeXcodeProjectInterpreter(),
-          config: FakeConfig(),
         );
 
         await dependencyManagement.setUp(platform: FlutterDarwinPlatform.ios);
@@ -1235,8 +1203,6 @@ version: 0.0.1
           logger: testLogger,
           analytics: fakeAnalytics,
           platform: FakePlatform(operatingSystem: 'macos'),
-          xcodeProjectInterpreter: FakeXcodeProjectInterpreter(),
-          config: FakeConfig(),
         );
 
         await dependencyManagement.setUp(platform: FlutterDarwinPlatform.ios);
@@ -1275,8 +1241,6 @@ version: 0.0.1
           logger: testLogger,
           analytics: fakeAnalytics,
           platform: FakePlatform(operatingSystem: 'macos'),
-          xcodeProjectInterpreter: FakeXcodeProjectInterpreter(),
-          config: FakeConfig(),
         );
 
         await dependencyManagement.setUp(platform: FlutterDarwinPlatform.ios);
@@ -1325,8 +1289,6 @@ flutter:
           logger: testLogger,
           analytics: fakeAnalytics,
           platform: FakePlatform(operatingSystem: 'macos'),
-          xcodeProjectInterpreter: FakeXcodeProjectInterpreter(),
-          config: FakeConfig(),
         );
 
         await dependencyManagement.setUp(platform: FlutterDarwinPlatform.ios);
@@ -1551,18 +1513,3 @@ class FakePlugin extends Fake implements Plugin {
 }
 
 class FakePluginPlatform extends Fake implements PluginPlatform {}
-
-class FakeXcodeProjectInterpreter extends Fake implements XcodeProjectInterpreter {
-  @override
-  Future<void> prefetchSwiftPackages(
-    String projectPath, {
-    required Directory buildDirectory,
-    bool quiet = true,
-    bool waitForCompletion = true,
-  }) async {}
-}
-
-class FakeConfig extends Fake implements Config {
-  @override
-  Object? getValue(String key) => null;
-}

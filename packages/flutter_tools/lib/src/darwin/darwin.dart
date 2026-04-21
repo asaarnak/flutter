@@ -3,8 +3,6 @@
 // found in the LICENSE file.
 
 import '../artifacts.dart';
-import '../base/config.dart';
-import '../base/file_system.dart';
 import '../base/version.dart';
 import '../build_info.dart';
 import '../ios/xcodeproj.dart';
@@ -128,12 +126,12 @@ enum FlutterDarwinPlatform {
   }
 
   /// Returns the corresponding build directory for the platform.
-  String buildDirectory({Config? config, FileSystem? fileSystem}) {
+  String buildDirectory() {
     switch (this) {
       case FlutterDarwinPlatform.ios:
-        return getIosBuildDirectory(config: config, fileSystem: fileSystem);
+        return getIosBuildDirectory();
       case FlutterDarwinPlatform.macos:
-        return getMacOSBuildDirectory(config: config, fileSystem: fileSystem);
+        return getMacOSBuildDirectory();
     }
   }
 }
